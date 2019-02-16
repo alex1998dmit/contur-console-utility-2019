@@ -14,5 +14,14 @@ function readLine(callback) {
 // TODO digi; 2016-04-08; добавить writeLine!!!
 
 module.exports = {
+    // Добавить сюда метод для вывода 
     readLine,
 };
+
+
+/* План 
+    1) добавить функцию для вывода - writeLine
+
+
+*/
+
