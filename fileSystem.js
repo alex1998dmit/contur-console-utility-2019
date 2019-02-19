@@ -3,7 +3,7 @@ const fs = require('fs');
 // TODO PE; 2018-08-20; переименовать?
 function getAllFilePathsWithExtension(directoryPath, extension, filePaths) {
     filePaths = filePaths || [];
-    // TODO Anonymous Developer; 2016-03-17; Необходимо переписать этот код и использовать асинхронные версии функций для чтения из файла
+    // TODO Anonymous Developer; 2016-03-17; Не понимаю, что здесь происходит асинхронные версии функций для чтения из файла
     const fileNames = fs.readdirSync(directoryPath);
     for (const fileName of fileNames) {
         // TODO WinDev; ; Убедиться, что будет работать под Windows.

@@ -102,6 +102,11 @@ function generateTableParams(comments) {
 
     const sortReduce = (p, c, i, a) => a[p].length > c.length ? p : i;
 
+    const fn = (a, b) => {
+        if (a.length > b.length) return -1;
+        if (a.length < b.length) return 1;
+    }
+
     comments.map(el => {
         authors.push(el.author);
         dates.push(el.date);
@@ -109,30 +114,105 @@ function generateTableParams(comments) {
         fileNames.push(el.fileName);
     });
     
-    const authorMax = authors.reduce((p, c, i, a) => sortReduce(p, c, i, a), 0);
-    const dateMax = dates.reduce((p, c, i, a) => sortReduce(p, c, i, a), 0);
-    const commentTextMax = commentTexts.reduce((p, c, i, a) => sortReduce(p, c, i, a), 0);
-    const fileNamesMax = fileNames.reduce((p, c, i, a) => sortReduce(p, c, i, a), 0);
+    const authorMax = authors.sort(fn);
+    const dateMax = dates.sort(fn);
+    const commentTextMax = commentTexts.sort(fn);
+    const fileNamesMax = fileNames.sort(fn);
+    // console.log()
 
-    return { author: authorMax, date: dateMax, commentText: commentTextMax, fileName: fileNamesMax};
+    return { author: authorMax[0].length, date: dateMax[0].length, commentText: commentTextMax[0].length, fileName: fileNamesMax[0].length};
 }
 
-function getSpaces(params) {
-    // const usrSpace = " ".repeat(4);
-    // const  
-    // console.log(usrSpace, 2);
-    return { usrSpace: " ".repeat((params.author - 4) / 2), dateSpace: " ".repeat((params.date - 4) / 2), 
-    commentTextSpace: " ".repeat((params.commentText - 7) / 2), fileNameSpace: " ".repeat((params.fileName - 8) /2) };
+function getSpaces(params, desc) {
+    desc =  desc || ['!', 'user', 'date', 'comment', 'fileName'];
+    let imp = desc[0];
+    let fourRepeat = desc[1] > 4 ? (params.author - 4) / 2 : 0;
+    let sevenRepeat =  desc[2] > 7 ? (params.commentText - 7)/2 : 0;
+    let eightRepeat = desc[3]  > 8 ? ((params.fileName - 8) /2) : 0;
+
+    let usr = " ".repeat(fourRepeat) + desc[1] + " ".repeat(fourRepeat);
+    let date = " ".repeat(fourRepeat) + desc[2] + " ".repeat(fourRepeat);
+    let com = " ".repeat(sevenRepeat) + desc[3] + " ".repeat(sevenRepeat);
+    let file = " ".repeat(eightRepeat) + desc[4] + " ".repeat(eightRepeat);
+    return { important:imp , usrSpace: usr, dateSpace: date,  commentTextSpace: com, fileNameSpace: file };
+}
+
+
+function showAll(comments, params) {
+    // comments.map(comment => {
+    //     let spaces = getSpaces(comment, [comment.isImportant]);
+    //     console.log(`|  ${comment.isImportant}  |  ${comment.author}  |  ${comment.date}  |  ${comment.commentText}  |  ${comment.fileName}  |`);
+    // });
+    let spaces = getSpaces(params, [comments[0].isImportant, comments[0].author, comments[0].date, comments[0].commentText, comments[0].fileName]);
+    console.log(`|  ${spaces.important}  |  ${spaces.usrSpace}  |  ${spaces.dateSpace}  |  ${spaces.commentTextSpace}  |  ${spaces.fileNameSpace}  |`);
+
+}
+
+function getSpacesParams(obj, params) {
+    const authorLen = (params.author - obj.author.length)/2;
+    const dateLen = (params.date - obj.date.length)/2;
+    const textLen = (params.commentText - obj.commentText.length)/2;
+    const fileName = (params.fileName - obj.fileName.length)/2;
+
+    const newObj = 
+    { 
+        author: [Math.floor(authorLen), Math.ceil(authorLen)],
+        date: [Math.floor(dateLen), Math.ceil(dateLen)],
+        text: [Math.floor(textLen), Math.ceil(textLen)],
+        fileName: [Math.floor(fileName), Math.ceil(fileName)]
+    };
+
+    return newObj;
+}
+
+function renderHeadTable(params) {
+    const obj = {
+        isImportant: '!',
+        author: 'user',
+        date: 'date', 
+        commentText: 'comment',
+        fileName: 'fileName'
+    }
+
+    let spacesObj = getSpacesParams(obj, tableParams);
+    let spaces = {
+        authorL: " ".repeat(spacesObj.author[0]),
+        authorR: " ".repeat(spacesObj.author[1]),
+        dateL: " ".repeat(spacesObj.date[0]),
+        dateR: " ".repeat(spacesObj.date[1]),
+        textL: " ".repeat(spacesObj.text[0]),
+        textR: " ".repeat(spacesObj.text[1]),
+        fileNameL: " ".repeat(spacesObj.fileName[0]),
+        fileNameR: " ".repeat(spacesObj.fileName[1]),
+    };
+
+    const headLen = `|  ${obj.isImportant}  |  ${spaces.authorL}${obj.author}${spaces.authorR}  |${spaces.dateL}${obj.date}${spaces.dateR}  |${spaces.textL}${obj.commentText}${spaces.textR}  |  ${spaces.fileNameL}${obj.fileName}${spaces.fileNameR}|`.length;
+    console.log(`|  ${obj.isImportant}  |  ${spaces.authorL}${obj.author}${spaces.authorR}  |  ${spaces.dateL}${obj.date}${spaces.dateR}  |  ${spaces.textL}${obj.commentText}${spaces.textR}  |  ${spaces.fileNameL}${obj.fileName}${spaces.fileNameR}  |`);
+    console.log("-".repeat(headLen));
 }
 
 function show(comments) {    
     comments = shortText(comments);
     tableParams = generateTableParams(comments);
-    console.log(tableParams);
-    let spaces = getSpaces(tableParams);
-    console.log(spaces);
-    console.log('|  !  |' + spaces.usrSpace + 'user' + spaces.usrSpace  + '|' + spaces.dateSpace + 'date' + spaces.dateSpace + '|' + spaces.commentTextSpace 
-    + 'comment' + spaces.commentTextSpace + spaces.fileNameSpace + 'fileName' + spaces.fileNameSpace)    ;
+
+    renderHeadTable(tableParams);
+    comments.map(comment => {
+        let spacesObj = getSpacesParams(comment, tableParams);
+        let spaces = {
+            authorL: " ".repeat(spacesObj.author[0]),
+            authorR: " ".repeat(spacesObj.author[1]),
+            dateL: " ".repeat(spacesObj.date[0]),
+            dateR: " ".repeat(spacesObj.date[1]),
+            textL: " ".repeat(spacesObj.text[0]),
+            textR: " ".repeat(spacesObj.text[1]),
+            fileNameL: " ".repeat(spacesObj.fileName[0]),
+            fileNameR: " ".repeat(spacesObj.fileName[1]),
+        };
+        console.log(`|  ${comment.isImportant}  |  ${spaces.authorL}${comment.author}${spaces.authorR}  |  ${spaces.dateL}${comment.date}${spaces.dateR}  |  ${spaces.textL}${comment.commentText}${spaces.textR}  |  ${spaces.fileNameL}${comment.fileName}${spaces.fileNameR}  |`);
+    });
+    // console.log(`|  ${spaces.important}  |  ${spaces.usrSpace}  |  ${spaces.dateSpace}  |  ${spaces.commentTextSpace}  |  ${spaces.fileNameSpace}  |`);
+    // console.log(comments);
+    // showAll(comments, tableParams);
 }
 
 /* 
