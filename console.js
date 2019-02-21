@@ -11,7 +11,7 @@ function readLine(callback) {
     rl.on('line', callback); // TODO pe; 2015-08-10; а какая будет кодировка?
 }
 
-// TODO digi; 2016-04-08; добавить writeLine!!!
+// TODO digi; 2016-04-08; добавить writeLine
 
 module.exports = {
     // Добавить сюда метод для вывода 
@@ -19,9 +19,4 @@ module.exports = {
 };
 
 
-/* План 
-    1) добавить функцию для вывода - writeLine
-
-
-*/
 

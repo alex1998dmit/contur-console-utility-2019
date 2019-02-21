@@ -28,7 +28,7 @@ module.exports = {
     readFile,
 };
 
-// TODO Hi!
+// TODO Hi
 // TODO Как дела?
-// TODO Veronika; 2018-12-25; С Наступающим 2019!
+// TODO Veronika; 2018-12-25; С Наступающим 2019
 // TODO kirill; 2018; Кирилл молодец
