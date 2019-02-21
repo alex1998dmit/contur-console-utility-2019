@@ -1,4 +1,4 @@
-const { getAllFilePathsWithExtension, readFile } = require('../../fileSystem');
+const { getAllFilePathsWithExtension, readFile } = require('../fileSystem');
 const path = require('path');
 
 function getFiles () {
@@ -10,7 +10,7 @@ function getFilesPath() {
     return getAllFilePathsWithExtension(process.cwd(), 'js');
 }
 
-function createMasComments(comments) {
+function getArrayOfComments(comments) {
     let commentsArray = [];
     let commentArray;
     for(let key in comments) {
@@ -36,18 +36,18 @@ function isImportantComment(obj) {
 }
 
 
-function findAllComments() {
+function getFilesAndCommentsObject() {
     const files = getFiles();
-    const obj = {};
+    const filesAndComments = {};
     const regExp = /\x2F\x2F TODO(.*)/g;
     const filePaths = getFilesPath();
     files.map((el, index) => {
-        obj[path.basename(filePaths[index])] = el.match(regExp);
+        filesAndComments[path.basename(filePaths[index])] = el.match(regExp);
     });
-    return obj;
+    return filesAndComments;
 }
 
-function shortText(comments) {
+function shortCommentsFileds(comments) {
     return comments.map(obj => {
         obj.author = (obj.author.length < 10) ? obj.author : obj.author.substr(0, 7) + '...';
         obj.commentText = (obj.commentText.length < 50) ? obj.commentText : obj.commentText.substr(0,47) + '...';
@@ -58,8 +58,8 @@ function shortText(comments) {
 }
 
 function getCommentsArrObj() {
-    const comments = findAllComments();
-    let commentsArray = createMasComments(comments);
+    const comments = getFilesAndCommentsObject();
+    let commentsArray = getArrayOfComments(comments);
     let commentsObjArray = [];
     commentsObjArray = commentsArray.map((commentArray) => {
         return {
@@ -87,10 +87,7 @@ function sortByName(comments, name) {
 }
 
 
-
-
 module.exports = {
-    shortText,
     getCommentsArrObj,
     onlyImportant,
     sortByName,

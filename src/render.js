@@ -1,3 +1,13 @@
+function shortText(comments) {
+    return comments.map(obj => {
+        obj.author = (obj.author.length < 10) ? obj.author : obj.author.substr(0, 7) + '...';
+        obj.commentText = (obj.commentText.length < 50) ? obj.commentText : obj.commentText.substr(0,47) + '...';
+        obj.fileName = (obj.fileName.length < 15) ? obj.fileName : obj.fileName.substr(0,12) + '...';
+        obj.isImportant = (obj.isImportant) ? obj.isImportant : " ";
+        return obj;
+    });    
+}
+
 function generateTableParams(comments) {
     let authors = [];
     let dates = []; 
@@ -58,8 +68,8 @@ function getSpacesParams(obj, params) {
 }
 
 function renderRow(tableParams, obj) {
-    let spacesObj = getSpacesParams(obj, tableParams);
-    let spaces = {
+    const spacesObj = getSpacesParams(obj, tableParams);
+    const spaces = {
         authorR: " ".repeat(spacesObj.author),
         dateR: " ".repeat(spacesObj.date),
         textR: " ".repeat(spacesObj.text),
@@ -78,18 +88,37 @@ function renderHeadTable(params) {
         fileName: 'fileName'
     };
 
-    let rowLine = renderRow(params, obj);
-    console.log(params);
-    let len = rowLine.lenght;
+    const rowLine = renderRow(params, obj);
+    const len = rowLine.lenght;
+    const bottomLine = "-".repeat(rowLine.length)
 
-    console.log(rowLine);
-    console.log("-".repeat(rowLine.length));
+    return { content: rowLine + '\n' + bottomLine + '\n', len: rowLine.length};
 }
 
+function bodyRender(comments) {
+    let rowLine = '';   
+    comments = shortText(comments);
+    tableParams = generateTableParams(comments);
+    const head = renderHeadTable(tableParams);
+    const headContent =head.content;
+    const len = head.len;
+    const bottomLine = "-".repeat(len)
+
+    if(comments.length === 0) {
+        console.log(headContent);
+        return ;
+    }
+    
+    comments.map(comment => {
+        rowLine = rowLine + renderRow(tableParams, comment) + '\n';
+    });
+    return headContent + rowLine + bottomLine;
+}
 
 module.exports = {
     getSpacesParams, 
     generateTableParams,
     renderRow, 
     renderHeadTable,
+    bodyRender,
 };

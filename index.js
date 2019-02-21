@@ -1,53 +1,31 @@
-const commentsDir = './src/utils/comments';
-const renderDir = './src/utils/render';
-const utilsDir = './src/utils/utils';
+const commentsDir = './src/comments';
+const renderDir = './src/render';
+const utilsDir = './src/utils';
 
 const { readLine } = require('./console');
-const { shortText } = require(commentsDir);
 const { getCommentsArrObj } = require(commentsDir);
-const { generateTableParams } = require(renderDir);
-const { renderRow } = require(renderDir);
-const { renderHeadTable } = require(renderDir);
 const { onlyImportant } = require(commentsDir);
 const { sortByName } = require(commentsDir);
 const { groupBy } = require(utilsDir);
+const { bodyRender } = require(renderDir);
 
 app();
 
 function app () {
-
     console.log('Please, write your command!');
     readLine(processCommand);
 }
 
-function bodyRender(comments) {
-    let rowLine;   
-    comments = shortText(comments);
-    tableParams = generateTableParams(comments);
-    renderHeadTable(tableParams);
+const showAll = (comments) =>  console.log(bodyRender(comments));
 
-    if(comments.length === 0) {
-        return ;
-    }
-    
-    comments.map(comment => {
-        rowLine = renderRow(tableParams, comment);
-        console.log(rowLine);
-    });
-    console.log("-".repeat(rowLine.length))
-}
-
-const showAll = (comments) =>  bodyRender(comments);
-
-const showImportant = (comments) => bodyRender(onlyImportant(comments));
-// TODO DO IT!!!!!
+const showImportant = (comments) => console.log(bodyRender(onlyImportant(comments)));
 
 function showUsersComments(comments, user) {
     if(!user) {
         console.log('wrong command');
         return ;
     }
-    bodyRender(sortByName(comments, user));
+    console.log(bodyRender(sortByName(comments, user)));
 }
   
 
@@ -76,9 +54,9 @@ function sort(comments, oper) {
         const groupedArr = [];
         sortedWithAuthor.sort((a,b) => {
             if(a.author > b.author){
-                return 1;
-            } else if(a.author < b.author) {
                 return -1;
+            } else if(a.author < b.author) {
+                return 1;
             }
             return 0;
         });
@@ -108,7 +86,7 @@ function sort(comments, oper) {
     }
 
     switch (oper) {
-        case 'important':
+        case 'importance':
             return byImportant();
         case 'user':
             return byUser();
@@ -117,18 +95,17 @@ function sort(comments, oper) {
         default: 
             console.log('wrong command');
             return ;
-            break;
     }
 }
 
 
 function showSortByParam(comments, param) {    
-    const optionsSort = ['important', 'user', 'date'];
+    const optionsSort = ['importance', 'user', 'date'];
     if(!optionsSort.includes(param)) {
         console.log('wrong command');
         return ;
     }
-    bodyRender(sort(comments,param));
+    console.log(bodyRender(sort(comments,param)));
 }
 
 
@@ -137,7 +114,7 @@ function showByDate(comments, param) {
         console.log('wrong command');
         return ;
     }
-    bodyRender(comments.filter(com => com.date >= param));
+    console.log((bodyRender(comments.filter(com => com.date >= param))));
 }
 
 function processCommand (command) {
@@ -168,4 +145,3 @@ function processCommand (command) {
             break;
     }
 }
-
