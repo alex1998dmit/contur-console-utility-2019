@@ -28,7 +28,13 @@ function generateTableParams(comments) {
     let commentTexts = [];
     let fileNames = [];
 
-    const sortReduce = (p, c, i, a) => a[p].length > c.length ? p : i;
+    const tableParams = {
+        author: 'author',
+        date: 'date', 
+        commentsText: 'comment',
+        fileName: 'fileNames',
+    };
+
 
     const fn = (a, b) => {
         if (a.length > b.length) return -1;
@@ -47,14 +53,23 @@ function generateTableParams(comments) {
     const commentTextMax = commentTexts.sort(fn);
     const fileNamesMax = fileNames.sort(fn);
 
-    return { author: authorMax[0].length, date: dateMax[0].length, commentText: commentTextMax[0].length, fileName: fileNamesMax[0].length};
+    if(comments.length === 0) {
+        return { author: tableParams.author, date: tableParams.date, commentText:  tableParams.commentsText, fileName: tableParams.fileName };
+    }
+
+    return { 
+        author: (authorMax[0].length > 'user'.length) ? authorMax[0].length : 'user'.length, 
+        date: dateMax[0].length, 
+        commentText: commentTextMax[0].length, 
+        fileName: fileNamesMax[0].length
+    };
 }
 
-function getSpacesParams(obj, params) {
-    const authorLen = (params.author - obj.author.length);
-    const dateLen = (params.date - obj.date.length);
-    const textLen = (params.commentText - obj.commentText.length);
-    const fileName = (params.fileName - obj.fileName.length);
+function getSpacesParams(obj, params) {    
+    const authorLen = Math.abs((params.author - obj.author.length));
+    const dateLen =  Math.abs((params.date - obj.date.length));
+    const textLen =  Math.abs((params.commentText - obj.commentText.length));
+    const fileName =  Math.abs((params.fileName - obj.fileName.length));
 
     const newObj = 
     { 
@@ -69,7 +84,7 @@ function getSpacesParams(obj, params) {
 
 // ---------------------------------------------
 
-function renderRow(params, obj) {
+function renderRow(tableParams, obj) {
     let spacesObj = getSpacesParams(obj, tableParams);
     let spaces = {
         authorR: " ".repeat(spacesObj.author),
@@ -204,10 +219,87 @@ function showImportant(comments) {
     console.log("-".repeat(rowLine.length))
 }
 
+// -----------User comments--------------------
+
+function sortByName(comments, name) {
+    const regExp = new RegExp(`^${name.toLowerCase()}(.*)`, 'g');
+    return comments.filter(comment => comment.author.toLowerCase().match(regExp));
+}
+
+function showUsersComments(comments, user) {
+    let rowLine;
+    let sortedCom = sortByName(comments, user);
+    sortedCom = shortText(sortedCom);
+    tableParams = generateTableParams(sortedCom);
+
+    if(sortedCom.length === 0){
+        renderHeadTable(tableParams);
+        return ;
+    }
+
+    renderHeadTable(tableParams);
+    sortedCom.map(comment => {
+        rowLine = renderRow(tableParams, comment);
+        console.log(rowLine);
+    });
+    console.log("-".repeat(rowLine.length))
+}
+
+// -----------------------------------------------
+
+// -----------Sort------------------------------
+
+function sort(comments, oper) {
+    
+    const byImportant = () => {
+        commentsImportant = onlyImportant(comments);
+        commentsImportant.sort((a,b) => {
+            if(a.commentText.match(/!/g) && b.commentText.match(/!/g)){
+                if (a.commentText.match(/!/g).length > b.commentText.match(/!/g).length) {
+                    return -1;
+                } else if (a.commentText.match(/!/g).length < b.commentText.match(/!/g).length){
+                    return 1;
+                }
+            }
+            return 0;
+        });
+        
+        let commentsNoImp = comments.filter(el => !el.isImportant);
+        return commentsImportant.concat(commentsNoImp);
+    }
+
+    const user = () => {
+
+    }
+
+    const date = () => {
+
+    }
+
+    switch (oper) {
+        case 'important':
+            byImportant();
+            break;
+        case 'user':
+            byUser();
+            break;
+        case 'date':
+            byDate();
+            break;
+    }
+}
+
+function sortByParam(comments, param) {
+    sort(comments,param);
+}
+
+// ---------------------
+
 function processCommand (command) {
     const commentsArray = getCommentsArrObj();
+    command = command.split(" ");
 
-    switch (command) {
+    switch (command[0]) {
         case 'exit':
             process.exit(0);
             break;
@@ -217,14 +309,14 @@ function processCommand (command) {
         case 'important':
             showImportant(commentsArray);
             break;
+        case 'user':
+            showUsersComments(commentsArray, command[1]);
+            break;
+        case 'sort':
+            sortByParam(commentsArray, command[1]);
+            break;
         default:
             console.log('wrong command');
             break;
     }
 }
-
-// TODO Hi!
-// TODO Как дела?
-// TODO Veronika; 2018-12-25; С Наступающим 2019!
-// TODO pe; 2018-12-26; Работать пора!!!
-// TODO Не понимаю, что здесь происходит...
