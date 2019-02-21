@@ -14,4 +14,3 @@ function showAll(comments) {
 module.exports = {
     showAll,
 };
-

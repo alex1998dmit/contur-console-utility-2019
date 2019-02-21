@@ -35,7 +35,6 @@ function isImportantComment(obj) {
     });
 }
 
-
 function getFilesAndCommentsObject() {
     const files = getFiles();
     const filesAndComments = {};
@@ -86,10 +85,8 @@ function sortByName(comments, name) {
     return comments.filter(comment => comment.author.toLowerCase().match(regExp));
 }
 
-
 module.exports = {
     getCommentsArrObj,
     onlyImportant,
     sortByName,
 };
-

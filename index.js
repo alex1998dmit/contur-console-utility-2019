@@ -1,8 +1,9 @@
 const commentsDir = './src/comments';
 const renderDir = './src/render';
 const utilsDir = './src/utils';
+const consoleDir = './console';
 
-const { readLine } = require('./console');
+const { readLine } = require(consoleDir);
 const { getCommentsArrObj } = require(commentsDir);
 const { onlyImportant } = require(commentsDir);
 const { sortByName } = require(commentsDir);
@@ -28,7 +29,6 @@ function showUsersComments(comments, user) {
     console.log(bodyRender(sortByName(comments, user)));
 }
   
-
 function sort(comments, oper) {
 
     const byImportant = () => {
@@ -98,7 +98,6 @@ function sort(comments, oper) {
     }
 }
 
-
 function showSortByParam(comments, param) {    
     const optionsSort = ['importance', 'user', 'date'];
     if(!optionsSort.includes(param)) {
@@ -107,7 +106,6 @@ function showSortByParam(comments, param) {
     }
     console.log(bodyRender(sort(comments,param)));
 }
-
 
 function showByDate(comments, param) {
     if(new Date(param) == 'Invalid Date') {
