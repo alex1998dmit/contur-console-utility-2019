@@ -295,7 +295,17 @@ function sort(comments, oper) {
     }
 
     const byDate = () => {
-
+        let commentsWithDate = comments.filter(el => el.date);
+        let commentsSortedByDate = commentsWithDate.sort((a, b) => {
+            if(a.date > b.date){
+                return -1
+            } else if(a.date < b.date){
+                return 1;
+            } 
+            return 0;
+        });
+        const commentsNoDate = comments.filter(el => !el.date);
+        return commentsSortedByDate.concat(commentsNoDate);
     }
 
     switch (oper) {
@@ -308,7 +318,7 @@ function sort(comments, oper) {
     }
 }
 
-function sortByParam(comments, param) {
+function showSortByParam(comments, param) {
     let sortedComments = sort(comments,param);
     sortedComments = shortText(sortedComments);
     tableParams = generateTableParams(sortedComments);
@@ -328,6 +338,28 @@ function sortByParam(comments, param) {
 
 // ---------------------
 
+// -----------date --------------
+
+function showByDate(comments, param) {
+    let sortedComments = comments.filter(com => com.date >= param);
+    sortedComments = shortText(sortedComments);
+    tableParams = generateTableParams(sortedComments);
+
+    if(sortedComments.length === 0){
+        renderHeadTable(tableParams);
+        return ;
+    }
+
+    renderHeadTable(tableParams);
+    sortedComments.map(comment => {
+        rowLine = renderRow(tableParams, comment);
+        console.log(rowLine);
+    });
+    console.log("-".repeat(rowLine.length))
+}
+
+// -----------------------------
+
 function processCommand (command) {
     const commentsArray = getCommentsArrObj();
     command = command.split(" ");
@@ -346,7 +378,10 @@ function processCommand (command) {
             showUsersComments(commentsArray, command[1]);
             break;
         case 'sort':
-            sortByParam(commentsArray, command[1]);
+            showSortByParam(commentsArray, command[1]);
+            break;
+        case 'date':
+            showByDate(commentsArray, command[1]);
             break;
         default:
             console.log('wrong command');
@@ -354,3 +389,9 @@ function processCommand (command) {
     }
 }
 
+// TODO Veronika; 2013-12-25; С Наступающим 2014!
+// TODO Veronika; 2014-12-25; С Наступающим 2015!
+// TODO Veronika; 2015-12-25; С Наступающим 2016!
+// TODO Veronika; 2016-12-25; С Наступающим 2017!
+// TODO Veronika; 2017-12-25; С Наступающим 2018!
+// TODO Veronika; 2018-12-25; С Наступающим 2019!
