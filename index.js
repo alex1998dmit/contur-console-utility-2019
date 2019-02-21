@@ -249,12 +249,23 @@ function showUsersComments(comments, user) {
 
 // -----------Sort------------------------------
 
+function groupBy(objectArray, property) {
+    return objectArray.reduce(function (acc, obj) {
+      var key = obj[property].toLowerCase();
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(obj);
+      return acc;
+    }, {});
+  }
+  
 function sort(comments, oper) {
     
     const byImportant = () => {
         commentsImportant = onlyImportant(comments);
         commentsImportant.sort((a,b) => {
-            if(a.commentText.match(/!/g) && b.commentText.match(/!/g)){
+            if(a.commentText.match(/!/g) && b.commentText.match(/!/g)) {
                 if (a.commentText.match(/!/g).length > b.commentText.match(/!/g).length) {
                     return -1;
                 } else if (a.commentText.match(/!/g).length < b.commentText.match(/!/g).length){
@@ -262,35 +273,57 @@ function sort(comments, oper) {
                 }
             }
             return 0;
-        });
-        
+        });    
         let commentsNoImp = comments.filter(el => !el.isImportant);
-        return commentsImportant.concat(commentsNoImp);
+        let concatVal = commentsImportant.concat(commentsNoImp)
+        return concatVal;
     }
 
-    const user = () => {
+    const byUser = () => {
+        sortedWithAuthor = comments.filter(el => el.author);
+        const groupedArr = [];
+        const groupedObj = groupBy(sortedWithAuthor, 'author');
 
+        for(let key in groupedObj){
+            groupedObj[key].map(el => {
+                groupedArr.push(el);
+            })
+        }
+
+        sortedNoAuthor = comments.filter(el => !el.author);
+        return groupedArr.concat(sortedNoAuthor);
     }
 
-    const date = () => {
+    const byDate = () => {
 
     }
 
     switch (oper) {
         case 'important':
-            byImportant();
-            break;
+            return byImportant();
         case 'user':
-            byUser();
-            break;
+            return byUser();
         case 'date':
-            byDate();
-            break;
+            return byDate();
     }
 }
 
 function sortByParam(comments, param) {
-    sort(comments,param);
+    let sortedComments = sort(comments,param);
+    sortedComments = shortText(sortedComments);
+    tableParams = generateTableParams(sortedComments);
+
+    if(sortedComments.length === 0){
+        renderHeadTable(tableParams);
+        return ;
+    }
+
+    renderHeadTable(tableParams);
+    sortedComments.map(comment => {
+        rowLine = renderRow(tableParams, comment);
+        console.log(rowLine);
+    });
+    console.log("-".repeat(rowLine.length))
 }
 
 // ---------------------
@@ -320,3 +353,4 @@ function processCommand (command) {
             break;
     }
 }
+
