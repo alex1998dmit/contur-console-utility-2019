@@ -105,7 +105,8 @@ function bodyRender(comments) {
     const bottomLine = "-".repeat(len)
 
     if(comments.length === 0) {
-        return headContent;
+        console.log(headContent);
+        return ;
     }
     
     comments.map(comment => {
