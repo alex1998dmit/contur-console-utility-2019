@@ -37,25 +37,25 @@
 
 Вывод всех команда 
 
-![](https://photos.app.goo.gl/kwCvdWGqTSoTMysw6)
+![](https://user-images.githubusercontent.com/40519697/53560838-5d500280-3b5e-11e9-8536-72fa1bb777c8.png)
 
 ### User username
 
 Вывод всех записей пользователя
 
-![](https://photos.app.goo.gl/LzWzGhyKCt79Dxtg6)
+![](https://user-images.githubusercontent.com/40519697/53560892-78bb0d80-3b5e-11e9-8bef-f5e117a76946.png)
 
 ### Important 
 
 Вывод всех важных комментариев 
 
-![](https://photos.app.goo.gl/hugewASprDjbq4HU7)
+![](https://user-images.githubusercontent.com/40519697/53560790-3c87ad00-3b5e-11e9-8a4b-405e6b2e41a8.png)
 
-### Date dateAfter
+### Date 
 
 Вывод всех комментариев после определенной даты 
 
-![](https://photos.app.goo.gl/J1YTmyhwHE7Yv8QD6)
+![](https://user-images.githubusercontent.com/40519697/53560765-2c6fcd80-3b5e-11e9-9f2e-f472c506611e.png)
 
 ### Sort 
 
@@ -63,9 +63,8 @@
 
 #### Sort user 
 
-![](https://photos.app.goo.gl/Yy4w8PBHSkAeuUwD7)
+![](https://user-images.githubusercontent.com/40519697/53560858-66d96a80-3b5e-11e9-8c6a-cdd2b6fbc77b.png)
 
 #### Sort date 
 
-![](https://photos.app.goo.gl/VYa3Jstan7zrbjZ66)
-
+![](https://user-images.githubusercontent.com/40519697/53560964-a2743480-3b5e-11e9-8581-cc324a336c2a.png)
