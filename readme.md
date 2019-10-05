@@ -1,104 +1,22 @@
-# Консольная утилита для формирования таблицы комменатриев 
+# Console utility for working with comments in files 
 
-## Задача
+## Task
 
-### Постановка задачи
+The utility will take all files with the .js extension in the current directory, find all comments with TODO in them.
+All single-line TODO comments have the same beginning: two slashes, the word TODO (in any case), a space or a colon (or a colon, and a space; or a space-a colon-space; or several spaces) and then the comment text.
+Comment text in todo can be represented in plain text. Or use special markup:
+	// TODO {Author name}; {Date}; {Text}
+A semicolon is required after the name and date, but a space between them is optional.
 
-Утилита будет брать все файлы с расширением .js в текущей директории, находить в них все комментарии с TODO. 
-Все однострочные TODO-комментарии имеют одинаковое начало: два слеша, слово TODO (в любом регистре), пробел или двоеточие (или и двоеточие, и пробел; или пробел-двоеточие-пробел; или несколько пробелов) и дальше текст комментария.
-Текст комментария в todo может быть представлен обычным текстом. Или же использовать специальную разметку:
-	// TODO {Имя автора}; {Дата комментария}; {Текст комментария}
-После имени и даты обязательно ставится точка с запятой, а вот пробел между ними не обязателен.
+### Utility commands 
 
-### Команды утилиты 
+1.	exit :
+2.	show : show all TODO comments
+3.	important : show only important comments.
+4.	user {username} : show user's comments
+5.	sort {importance | user | date} : sort by param
+6. 	date {yyyy[-mm-dd]}: shows all comments created after the transmitted date (inclusive).
 
-1. exit : завершение работы программы (уже реализовано)
-2. show : показать все todo
-3. important : показывать только todo, в которых есть восклицательный знак.
-В комментарии может присутствовать восклицательный знак (!), что означает, что это задача с высоким приоритетом.
-4. user {username} : показывать только комментарии от указанного пользователя.
-Имя пользователя должно быть регистронезависимо. Пример команды: "user veronika"
-5. sort {importance | user | date} : выводит отсортированные todo
-Если аргумент importance, то сначала выводятся комментарии с восклицательными знаками, потом все остальные. Чем больше
-восклицательных знаков, тем выше приоритет и тем выше в списке этот комментарий.
-Если аргумент user, то выводятся задачи сгрупированные по пользователям, а в конце безымянные.
-Если аргумент date, то выводятся сначала самые новые, потом постарше, потом без дат.
-Примеры команд: "sort importance", "sort user", "sort date"
-6. date {yyyy[-mm-dd]}: показывает все комментарии, созданные после переданной даты (включительно).
-Датой может быть только год, год с месяцем (через дефис) или год с месяцем и днем.
-Примеры команд: "date 2015", "date 2016-02", "date 2018-03-02".
-В ответ на команду  "date 2015" ожидается список todo, которые были созданы в 2015 году и позже.
+## Project status
 
-Если введена команда не из этого списка, то в консоль должен выводиться текст "wrong command".
-
-## Реализация 
-
-### Show 
-
-Вывод всех команда 
-
-Синтаксис: 
-```
-show
-```
-
-##### Пример: 
-![](https://user-images.githubusercontent.com/40519697/53560838-5d500280-3b5e-11e9-8536-72fa1bb777c8.png)
-
-### User username
-
-Вывод всех записей пользователя
-
-Синтаксис: 
-```
-user usernameOrPartOfUsername
-```
-
-##### Пример: 
-![](https://user-images.githubusercontent.com/40519697/53560892-78bb0d80-3b5e-11e9-8bef-f5e117a76946.png)
-
-### Important 
-
-Вывод всех важных комментариев 
-
-Синтаксис: 
-```
-important
-```
-
-##### Пример: 
-![](https://user-images.githubusercontent.com/40519697/53560790-3c87ad00-3b5e-11e9-8a4b-405e6b2e41a8.png)
-
-### Date 
-
-Вывод всех комментариев после определенной даты 
-
-Синтаксис: 
-```
-Date dateString
-```
-##### Пример: 
-![](https://user-images.githubusercontent.com/40519697/53560765-2c6fcd80-3b5e-11e9-9f2e-f472c506611e.png)
-
-### Sort 
-
-Сортировка по определенным параметрам 
-
-#### Sort user 
-
-Синтаксис: 
-```
-Sort user
-```
-##### Пример: 
-![](https://user-images.githubusercontent.com/40519697/53560858-66d96a80-3b5e-11e9-8c6a-cdd2b6fbc77b.png)
-
-#### Sort date 
-
-Синтаксис: 
-```
-Sort date
-```
-
-##### Пример: 
-![](https://user-images.githubusercontent.com/40519697/53560964-a2743480-3b5e-11e9-8581-cc324a336c2a.png)
+Project completed
