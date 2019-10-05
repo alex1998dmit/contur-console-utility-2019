@@ -17,6 +17,32 @@ A semicolon is required after the name and date, but a space between them is opt
 5.	sort {importance | user | date} : sort by param
 6. 	date {yyyy[-mm-dd]}: shows all comments created after the transmitted date (inclusive).
 
+## Install and start
+*	npm install
+*	node index.js (for linux: nodejs index.js)
+
+## Examples
+
+### Show
+
+![](https://media.giphy.com/media/RleGF1UbwVAeK1yQUC/giphy.gif)
+
+### Important
+
+![](https://media.giphy.com/media/IgXxXS45VxaycwXCRH/giphy.gif)
+
+### Sort 
+
+![](https://media.giphy.com/media/Q5de61mHs4wDpxf6Aw/giphy.gif)
+
+### Date
+
+![](https://media.giphy.com/media/LrRoCyMRRoWjIgVBwY/giphy.gif)
+
+### User
+
+![](https://media.giphy.com/media/SXTlxdbahCbHw6Yjvd/giphy.gif)
+
 ## Project status
 
 Project completed
